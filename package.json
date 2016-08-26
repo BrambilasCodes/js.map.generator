@@ -21,11 +21,13 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.6.0",
+    "gulp-connect": "^5.0.0",
     "gulp-inject": "^4.1.0",
     "gulp-jshint": "^2.0.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
+    "jasmine-core": "^2.4.1",
     "jshint": "^2.9.3",
     "jshint-stylish": "^2.2.1"
   }
