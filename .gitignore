@@ -38,3 +38,4 @@ jspm_packages
 
 # auto-generated files
 dist
+tests/_all
