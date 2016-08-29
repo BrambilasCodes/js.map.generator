@@ -10,17 +10,17 @@ const connect = require('gulp-connect');
 
 gulp.task("default", ["connect", "jshint", "es6", "inject-tests", "watch"]);
 
-gulp.task("watch", () => {
-    gulp.watch("./src/**/*js", ["jshint", "es6", "inject-tests"]);
-    gulp.watch("./tests/**/*.test.js", ["inject-tests"]);
-    gulp.watch("./tests/index.html", ["live-reload"]);
-});
-
 gulp.task("connect", () => {
     connect.server({
         root: 'tests',
         livereload: true
     });
+});
+
+gulp.task("jshint", () => {
+    return gulp.src("./src/**/*js")
+        .pipe(jshint())
+        .pipe(jshint.reporter("jshint-stylish"));
 });
 
 gulp.task("es6", () => {
@@ -35,9 +35,11 @@ gulp.task("es6", () => {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task("inject-tests", ["transfer-library-code"], () => {
-    console.log(new Date());
+gulp.task("transfer-library-code", () => {
+    return gulp.src(["./dist/all.js"]).pipe(gulp.dest("./tests/_all"));
+});
 
+gulp.task("inject-tests", ["transfer-library-code"], () => {
     return gulp.src("./tests/index.html")
         .pipe(inject(gulp.src(["./tests/_all/all.js", "./tests/**/*.test.js"], {
             read: false
@@ -47,16 +49,12 @@ gulp.task("inject-tests", ["transfer-library-code"], () => {
         .pipe(gulp.dest("./tests"));
 });
 
-gulp.task("jshint", () => {
-    return gulp.src("./src/**/*js")
-        .pipe(jshint())
-        .pipe(jshint.reporter("jshint-stylish"));
-});
-
 gulp.task("live-reload", () => {
     return gulp.src("./tests/index.html").pipe(connect.reload());
 });
 
-gulp.task("transfer-library-code", () => {
-    return gulp.src(["./dist/all.js"]).pipe(gulp.dest("./tests/_all"));
+gulp.task("watch", () => {
+    gulp.watch("./src/**/*js", ["jshint", "es6", "inject-tests"]);
+    gulp.watch("./tests/**/*.test.js", ["inject-tests"]);
+    gulp.watch("./tests/index.html", ["live-reload"]);
 });
